@@ -44,7 +44,7 @@ public class Nodo {
         textoNodosHijos = new ArrayList<>();
         String texto = "";
         for (int i = 0; i < nivel; i++) {
-            texto += "--->";
+            texto += "  └>";
         }
         if (nodosHijos.size() > 0) {
             texto += this.informacion;

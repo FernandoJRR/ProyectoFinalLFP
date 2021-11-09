@@ -248,7 +248,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 //Se ajusta el tamaño del tab
                 ModelAnalizador.setSizeTabulador(editorTextArea.getTabSize());
                 //Se indica el inicio del analisis
-                appendAPane(consolaTextPane, "-------------------- Iniciando Analisis Lexico --------------------\n\n", java.awt.Color.GREEN);
+                appendAPane(consolaTextPane, "-------------------- Iniciando Analisis Lexico --------------------\n\n", java.awt.Color.YELLOW);
                 //Se envia el texto al tokenizador
                 ModelAnalizador.tokenizar(editorTextArea.getText());
                 if (ModelAnalizador.getErroresLexicos()) {
@@ -291,7 +291,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         private void analisisSintacticoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analisisSintacticoMenuItemActionPerformed
                 if (ModelAnalizador.getAnalisisLexicoRealizado() && !ModelAnalizador.getErroresLexicos()) {
-                        appendAPane(consolaTextPane, "-------------------- Iniciando Analisis Sintactico --------------------\n\n", java.awt.Color.GREEN);
+                        appendAPane(consolaTextPane, "-------------------- Iniciando Analisis Sintactico --------------------\n\n", java.awt.Color.YELLOW);
                         ArrayList<String> arbolTexto = ModelAnalizador.parse();
                         if (arbolTexto.get(arbolTexto.size()-1).equals("")) {
                                 for (int i = 0; i < arbolTexto.size()-2; i++) {
@@ -304,9 +304,38 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                                 }
                                 appendAPane(consolaTextPane, "----------------------- Arbol Sintactico Generado ----------------------\n\n", java.awt.Color.GREEN);
                                 appendAPane(consolaTextPane, "-------------------- Analisis Sintactico Completado --------------------\n\n", java.awt.Color.GREEN);
-                                appendAPane(consolaTextPane, "----------------------- Realizando Interpretacion ----------------------\n\n", java.awt.Color.GREEN);
                                 try {
+                                        appendAPane(consolaTextPane, "----------------------- Elige un path para guardar el output ----------------------\n\n", java.awt.Color.YELLOW);
+                                        
+                                        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+                                        fileChooser.setCurrentDirectory(new java.io.File("."));
+                                        fileChooser.setApproveButtonText("Guardar");
+                                        fileChooser.setDialogTitle("Guardar Output");
+                                        //fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                        //
+                                        // disable the "All files" option.
+                                        //
+                                        fileChooser.setAcceptAllFileFilterUsed(false);
+                                        //    
+                                        if (fileChooser.showOpenDialog(this) != javax.swing.JFileChooser.APPROVE_OPTION) { 
+                                                System.out.println("No Selection ");
+                                        }
+                                        String path = fileChooser.getSelectedFile().toString();
+                                        System.out.println(path);
+
+                                        //fDialog.setVisible(true);
+
+                                        appendAPane(consolaTextPane, "----------------------- Realizando Interpretacion ----------------------\n\n", java.awt.Color.YELLOW);
+                                        
                                         ModelAnalizador.interpretar();
+
+                                        ModelAnalizador.guardarOutputInterprete(path);
+
+                                        appendAPane(consolaTextPane, "----------------------- Interpretacion Realizada ----------------------\n\n", java.awt.Color.GREEN);
+                                        appendAPane(consolaTextPane, "Puedes revisar el output en "+path, java.awt.Color.GREEN);
+
+                                } catch (IOException e) {
+                                        appendAPane(consolaTextPane, "Error, no se ha podido guardar el archivo", java.awt.Color.RED);
                                 } catch (SimboloNoEncontradoException e) {
                                         appendAPane(consolaTextPane, e.getMessage(), java.awt.Color.RED);
                                 } catch (LoopBoundInvalidoException e) {

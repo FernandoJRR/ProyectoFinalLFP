@@ -22,7 +22,11 @@ public class AutomataPila {
     private static Token tokenActual;
     
     public static Arbol parse(ArrayList<Token> tokens) throws ParsingException {
-        tokens.add(new Token("", "", tokens.get(tokens.size()-1).posicion())); //Se agrega el token de terminacion del programa $
+        if (tokens.size() > 0) { //Se agrega el token de terminacion del programa $
+            tokens.add(new Token("", "", tokens.get(tokens.size()-1).posicion())); 
+        } else {
+            tokens.add(new Token("", "", new int[]{0,0})); 
+        }
         AutomataPila.arbolSintactico = new Arbol(new Nodo(gramatica.getProduccionInicial()));
         AutomataPila.pila = new Stack<>();
         AutomataPila.pilaRecorrido = new Stack<>();
@@ -97,6 +101,8 @@ public class AutomataPila {
         new String[]{"FIN","ESCRIBIR","REPETIR","INICIAR","SI","VERDADERO","FALSO","ENTONCES"},
         //Se declaran los placeholder
         new String[]{"IDENTIFICADOR","ENTERO","LITERAL"},
+        
+        //Se crea la gramatica
         new ReglaProduccion[]{
             new ReglaProduccion(
                 "ESTRUCTURA", 

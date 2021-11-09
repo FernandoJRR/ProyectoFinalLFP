@@ -31,6 +31,8 @@ public class ModelAnalizador {
     private static ArrayList<Token> tokens = new ArrayList<>();
     private static Arbol arbolSintactico;
     
+    private static ArrayList<String> output = new ArrayList<>();
+    
     private static boolean analisisLexicoRealizado = false;
     private static boolean erroresLexicos = false;
     private static boolean cambioTexto = false;
@@ -90,6 +92,8 @@ public class ModelAnalizador {
     public static void interpretar() throws SimboloNoEncontradoException, LoopBoundInvalidoException {
         Interprete.reset();
         Interprete.interpretar(arbolSintactico.getNodoInicial());
+        output = new ArrayList<>();
+        output = Interprete.getOutputString();
     }
     
     public static void guardar(String texto) throws IOException {
@@ -102,6 +106,17 @@ public class ModelAnalizador {
     
     public static void guardarComo(String texto, String archivo) throws IOException {
         String str = texto;
+        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+        writer.write(str);
+        
+        writer.close();
+    }
+    
+    public static void guardarOutputInterprete(String archivo) throws IOException {
+        String str = "";
+        for (String lineaOutput : output) {
+            str += lineaOutput;
+        }
         BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
         writer.write(str);
         

@@ -17,6 +17,10 @@ import com.prueba.proyectofinal.analizadorSintactico.Nodo;
 public class Interprete {
     private static HashMap<String, Integer> tablaSimbolos = new HashMap<>(); //Guarda variables en pares Identificador-Valor
     private static ArrayList<String> outputString = new ArrayList<>();
+    
+    public static ArrayList<String> getOutputString() {
+        return outputString;
+    }
 
     public static Object interpretar(Nodo nodoInicial) throws SimboloNoEncontradoException, LoopBoundInvalidoException {
         switch (nodoInicial.getInformacion()) {
